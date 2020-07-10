@@ -115,11 +115,16 @@ class hostRegistry (object):
 
     def update_hosts(self):
         '''Write out the hosts file and (optionally) trigger the
-        onupdate callback.'''
+        onupdate callback.  
+
+        TODO: Currently erases all host file entries. So it will wipe /etc/hosts in it's current state. Attempting to change 'w' to 'a' (append mode) to see if makes a difference.
+
+        '''
 
         LOG.info('writing hosts to %s', self.hostsfile)
 
-        with open(self.hostsfile, 'w') as fd:
+        #with open(self.hostsfile, 'w') as fd:
+        with open(self.hostsfile, 'a') as fd:
             for name, data in self.byname.items():
                 for nwname, address in data['networks'].items():
                     fd.write('%s %s.%s.%s\n' % (
